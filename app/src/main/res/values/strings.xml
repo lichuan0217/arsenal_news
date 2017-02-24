@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">枪迷新闻</string>
+    <string name="action_settings">设置</string>
+    <string name="action_refresh">刷新</string>
+    <string name="action_share">分享</string>
+
+    <string name="about_share_text">阿森纳新闻--汇集枪迷的信息</string>
+
+    <string name="info_load_error">网络加载出错...</string>
+    <string name="info_news_list_load_error">网络加载出错...</string>
+    <string name="info_news_list_load_no_more">没有更多新闻...</string>
+    <string name="title_activity_artical">ArticalActivity</string>
+    <string name="snake_exit_once_more">再按一次退出应用</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="login_weibo_text">新浪微博</string>
+    <string name="logout_weibo_text">登出新浪微博</string>
+
+    <string name="favorite_login_prompt">请登录后收藏</string>
+    <string name="favorite_error_prompt">收藏失败</string>
+    <string name="favorite_prompt">已收藏</string>
+    <string name="favorite_cancel_prompt">已取消收藏</string>
+
+
+    <string name="test_artical_content">这名埃及球员以500万英镑的身价从巴塞尔转会而来，并在后腰位置上为枪手的防守提供了稳定保障。
+
+科奎林在接受《伦敦晚旗报》采访时表示：“他表现得很好，他对球队来讲是个很好的补充。他真的适应得很快，你别忘记他才来到这里两个多月。我认为他在对阵巴塞罗那的时候表现的真好，同样在对阵埃弗顿的比赛也是这样。”</string>
+    <string name="title_activity_login">登录</string>
+
+    <string name="weibosdk_demo_token_to_string_format_1">Token：%1$s \n有效期：%2$s</string>
+    <string name="weibosdk_demo_token_has_existed">Token 仍在有效期内，无需再次登录。</string>
+    <string name="title_activity_about">关于</string>
+    <string name="title_activity_favorite">我的收藏</string>
+    <string name="title_activity_setting">设置</string>
+    <string name="pref_notification">推送</string>
+    <string name="pref_notify_summary">推送最热新闻</string>
+    <string name="pref_notify_title">每日推送</string>
+    <string name="pref_notify_key">key_notify_news</string>
+
+    <string name="app_version">Version 0.1</string>
+    <string name="about_news_source_title">新闻来源</string>
+    <string name="about_news_source_content">数据来自虎扑体育-阿森纳版面</string>
+    <string name="about_author_title">作者</string>
+    <string name="about_author_content">一个爱吃的胖子枪迷</string>
+
+    <!-- For Shared Element Transitions -->
+    <string name="article_icon_transition_name" translatable="false">TN_ArticleIcon</string>
+    <string name="title_activity_news_index">@string/app_name</string>
+
+    <string name="news_list_empty">No News Data</string>
+    <string name="title_activity_news_detail">NewsDetailActivity</string>
+
+</resources>

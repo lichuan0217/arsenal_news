@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_8dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".newsdetail.NewsDetailFragment"
+    tools:showIn="@layout/activity_news_detail">
+
+    <TextView
+        android:id="@+id/tv_article_source"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_8dp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="来源" />
+
+    <TextView
+        android:id="@+id/tv_article_date"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_16dp"
+        android:text="2016-01-02"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <WebView
+        android:id="@+id/wv_article"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_article_editor"
+        style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:text="(编辑)" />
+</LinearLayout>

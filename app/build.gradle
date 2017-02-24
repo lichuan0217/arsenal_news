@@ -1,0 +1,70 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    defaultConfig {
+        applicationId rootProject.ext.android.applicationId
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.android.versionCode
+        versionName rootProject.ext.android.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    testCompile 'junit:junit:4.12'
+
+    // Android Support
+    compile rootProject.ext.dependencies.getAt("supprot-v4")
+    compile rootProject.ext.dependencies.getAt("appcompat-v7")
+    compile rootProject.ext.dependencies.getAt("design")
+    compile rootProject.ext.dependencies.getAt("recyclerview")
+    compile rootProject.ext.dependencies.getAt("cardview")
+    compile rootProject.ext.dependencies.getAt("gridlayout")
+
+    // Dagger 2
+    compile rootProject.ext.dependencies.getAt("dagger")
+    annotationProcessor rootProject.ext.dependencies.getAt("dagger-compiler")
+
+    // RxJava
+    compile rootProject.ext.dependencies.getAt("rxandroid")
+    compile rootProject.ext.dependencies.getAt("rxjava")
+
+    // Retrofit
+    compile rootProject.ext.dependencies.getAt("retrofit")
+    compile rootProject.ext.dependencies.getAt("retrofit-converters")
+    compile rootProject.ext.dependencies.getAt("retrofit-adapters")
+    compile rootProject.ext.dependencies.getAt("converter-gson")
+    compile rootProject.ext.dependencies.getAt("adapter-rxjava")
+    compile rootProject.ext.dependencies.getAt("okhttp")
+    compile rootProject.ext.dependencies.getAt("logging-interceptor")
+    compile rootProject.ext.dependencies.getAt("timber")
+
+    // Glide
+    compile rootProject.ext.dependencies.getAt("glide")
+
+    // ORMLite
+    compile rootProject.ext.dependencies.getAt("ormlite-android")
+
+    // Custom View
+    compile rootProject.ext.dependencies.getAt("circleimageview")
+    compile rootProject.ext.dependencies.getAt("multiline-collapsingtoolbar")
+    compile rootProject.ext.dependencies.getAt("fabprogresscircle")
+
+    // ButterKnife
+    annotationProcessor rootProject.ext.dependencies.getAt("butterknife-compiler")
+    compile rootProject.ext.dependencies.getAt("butterknife")
+}
