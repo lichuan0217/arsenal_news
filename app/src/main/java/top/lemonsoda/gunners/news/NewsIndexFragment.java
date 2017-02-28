@@ -136,6 +136,7 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
     @Override
     public void onDestroy() {
         super.onDestroy();
+        newsIndexAdapter.stopViewPagerScroll();
         Log.d(TAG, "onDestroy");
     }
 

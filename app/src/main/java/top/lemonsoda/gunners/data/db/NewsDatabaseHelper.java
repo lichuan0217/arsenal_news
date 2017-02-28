@@ -70,6 +70,14 @@ public class NewsDatabaseHelper extends OrmLiteSqliteOpenHelper {
         return null;
     }
 
+    public void clearTable() {
+        try {
+            TableUtils.clearTable(getConnectionSource(), News.class);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void close() {
         super.close();

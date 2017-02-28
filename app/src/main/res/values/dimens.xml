@@ -14,4 +14,6 @@
     <dimen name="appbar_collapse_height">256dp</dimen>
     <dimen name="about_header_height">230dp</dimen>
     <dimen name="margin_24dp">24dp</dimen>
+
+    <dimen name="news_list_header_height">230dp</dimen>
 </resources>

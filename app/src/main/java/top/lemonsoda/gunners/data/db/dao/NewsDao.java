@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.Log;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.DeleteBuilder;
-import com.j256.ormlite.stmt.PreparedDelete;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -43,9 +41,7 @@ public class NewsDao {
     public void updateNews(List<News> newsList) throws SQLException {
 
         // Delete the old data
-        DeleteBuilder<News, String> deleteBuilder = newsDaoOperation.deleteBuilder();
-        PreparedDelete<News> preparedDelete = deleteBuilder.prepare();
-        newsDaoOperation.delete(preparedDelete);
+        helper.clearTable();
 
         // Insert the new data
         for (News news : newsList) {

@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import top.lemonsoda.gunners.R;
 import top.lemonsoda.gunners.data.module.News;
+import top.lemonsoda.gunners.utils.ui.NewsPagerView;
 import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
 
 /**
@@ -35,9 +36,11 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<News> newsList = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private OnNewsIndexItemClickListener newsIndexItemClickListener;
+    private NewsPagerView newsPagerView;
 
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
+    private final int VIEW_TYPE_HEADER = 0;
+    private final int VIEW_TYPE_ITEM = 1;
+    private final int VIEW_TYPE_LOADING = 2;
 
     @Inject
     public NewsIndexAdapter(Context context) {
@@ -47,11 +50,16 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == VIEW_TYPE_ITEM) {
-            View view = layoutInflater.inflate(R.layout.item_news_list, parent, false);
+        if (viewType == VIEW_TYPE_HEADER) {
+            View view = layoutInflater.inflate(R.layout.layout_header_item_news_list, parent, false);
+            NewsHeaderViewHolder viewHolder = new NewsHeaderViewHolder(view);
+            newsPagerView = viewHolder.newsPagerView;
+            return viewHolder;
+        } else if (viewType == VIEW_TYPE_ITEM) {
+            View view = layoutInflater.inflate(R.layout.layout_item_news_list, parent, false);
             return new NewsItemViewHolder(view);
         } else if (viewType == VIEW_TYPE_LOADING) {
-            View view = layoutInflater.inflate(R.layout.loading_item_news_list, parent, false);
+            View view = layoutInflater.inflate(R.layout.layout_loading_item_news_list, parent, false);
             return new LoadingViewHolder(view);
         }
         return null;
@@ -59,12 +67,17 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof NewsItemViewHolder) {
+        if (holder instanceof NewsHeaderViewHolder) {
+            NewsHeaderViewHolder viewHolder = (NewsHeaderViewHolder) holder;
+            if (newsList.size() > 0) {
+                viewHolder.newsPagerView.setNewsList(newsList.subList(0, 6));
+            }
+        } else if (holder instanceof NewsItemViewHolder) {
             NewsItemViewHolder viewHolder = (NewsItemViewHolder) holder;
-            viewHolder.title.setText(newsList.get(position).getHeader());
-            viewHolder.src.setText(newsList.get(position).getSource());
+            viewHolder.title.setText(newsList.get(position - 1).getHeader());
+            viewHolder.src.setText(newsList.get(position - 1).getSource());
             Glide.with(context)
-                    .load(newsList.get(position).getThumbnail())
+                    .load(newsList.get(position - 1).getThumbnail())
                     .centerCrop()
                     .placeholder(R.mipmap.placeholder)
                     .thumbnail(0.5f)
@@ -77,12 +90,15 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public int getItemCount() {
-        return newsList.size();
+        return newsList.size() + 1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        return newsList.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        if (position == 0) {
+            return VIEW_TYPE_HEADER;
+        }
+        return newsList.get(position - 1) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
     public void swapData(Collection<News> newsCollection) {
@@ -99,18 +115,32 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void addNullData() {
         newsList.add(null);
-        notifyItemInserted(newsList.size() - 1);
+        notifyItemInserted(newsList.size());
     }
 
     public void removeNullData() {
         newsList.remove(newsList.size() - 1);
-        notifyItemRemoved(newsList.size());
+        notifyItemRemoved(newsList.size() + 1);
     }
 
     public void setNewsIndexItemClickListener(OnNewsIndexItemClickListener listener) {
         newsIndexItemClickListener = listener;
     }
 
+    public void stopViewPagerScroll() {
+        newsPagerView.stopAutoPlay();
+    }
+
+
+    public class NewsHeaderViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.new_pager_view)
+        NewsPagerView newsPagerView;
+
+        public NewsHeaderViewHolder(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
+    }
 
     public class NewsItemViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_news_list_title)
@@ -126,8 +156,8 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         void onItemClick() {
             int pos = getLayoutPosition();
             newsIndexItemClickListener.onItemClick(
-                    newsList.get(pos).getArticleId(),
-                    newsList.get(pos).getHeader());
+                    newsList.get(pos - 1).getArticleId(),
+                    newsList.get(pos - 1).getHeader());
         }
 
         public NewsItemViewHolder(View itemView) {
@@ -135,7 +165,6 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ButterKnife.bind(this, itemView);
         }
     }
-
 
     public class LoadingViewHolder extends RecyclerView.ViewHolder {
 
