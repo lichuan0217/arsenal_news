@@ -206,7 +206,9 @@ public class NewsPagerView extends FrameLayout {
                 handler.removeCallbacks(autoScrollTask);
                 handler.removeCallbacks(startAutoAfterDrag);
                 handler.postDelayed(startAutoAfterDrag, DELAY_AFTER_DRAG_TIME);
+                currentItem = vp.getCurrentItem();
             }
+            previousState = state;
         }
     }
 }
