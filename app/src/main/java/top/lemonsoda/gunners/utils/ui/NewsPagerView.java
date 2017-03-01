@@ -31,7 +31,7 @@ import top.lemonsoda.gunners.utils.Utils;
  * Header view in NewsIndexFragment.
  */
 
-public class NewsPagerView extends FrameLayout {
+public class NewsPagerView extends FrameLayout implements View.OnClickListener {
     private static final String TAG = NewsPagerView.class.getCanonicalName();
 
     private static final int DELAY_TIME = 5000;
@@ -44,6 +44,7 @@ public class NewsPagerView extends FrameLayout {
     private List<ImageView> ivDots;
     private int currentItem = 0;
     private Handler handler = new Handler();
+    private OnNewsIndexItemClickListener listener;
 
     @BindView(R.id.vp_news)
     ViewPager vp;
@@ -111,7 +112,7 @@ public class NewsPagerView extends FrameLayout {
                     .asBitmap()
                     .centerCrop()
                     .into(ivTitle);
-
+            content.setOnClickListener(this);
             contentViews.add(content);
         }
 
@@ -131,6 +132,7 @@ public class NewsPagerView extends FrameLayout {
 
     public void stopAutoPlay() {
         handler.removeCallbacks(autoScrollTask);
+        handler.removeCallbacks(startAutoAfterDrag);
     }
 
     Runnable autoScrollTask = new Runnable() {
@@ -159,6 +161,18 @@ public class NewsPagerView extends FrameLayout {
         }
     }
 
+    public void setOnNewsIndexItemClickListener(OnNewsIndexItemClickListener listener) {
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (listener != null) {
+            News news = newsList.get(vp.getCurrentItem());
+            listener.onItemClick(news.getArticleId(), news.getHeader());
+        }
+    }
+
     class NewsPagerAdapter extends PagerAdapter {
 
         @Override
@@ -173,7 +187,6 @@ public class NewsPagerView extends FrameLayout {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Log.d(TAG, "NewsPagerAdapter: instantiateItem position --> " + position);
             container.addView(contentViews.get(position));
             return contentViews.get(position);
         }

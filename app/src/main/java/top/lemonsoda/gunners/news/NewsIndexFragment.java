@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import top.lemonsoda.gunners.R;
 import top.lemonsoda.gunners.data.module.News;
 import top.lemonsoda.gunners.utils.ui.EmptyRecyclerView;
 import top.lemonsoda.gunners.utils.ui.EndlessRecyclerOnScrollListener;
+import top.lemonsoda.gunners.utils.ui.NewsPagerView;
 import top.lemonsoda.gunners.utils.ui.OnLoadMoreListener;
 import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
 
@@ -136,8 +138,13 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
     @Override
     public void onDestroy() {
         super.onDestroy();
-        newsIndexAdapter.stopViewPagerScroll();
         Log.d(TAG, "onDestroy");
+        // Stop the AutoScrollTask in NewsPagerView when destroy the fragment
+        RecyclerView.ViewHolder viewHolder =
+                newsListRecyclerView.getChildViewHolder(newsListRecyclerView.getChildAt(0));
+        NewsIndexAdapter.NewsHeaderViewHolder holder =
+                (NewsIndexAdapter.NewsHeaderViewHolder) viewHolder;
+        holder.newsPagerView.stopAutoPlay();
     }
 
     @Override

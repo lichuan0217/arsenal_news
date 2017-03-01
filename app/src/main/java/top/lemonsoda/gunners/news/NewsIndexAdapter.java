@@ -36,7 +36,6 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<News> newsList = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private OnNewsIndexItemClickListener newsIndexItemClickListener;
-    private NewsPagerView newsPagerView;
 
     private final int VIEW_TYPE_HEADER = 0;
     private final int VIEW_TYPE_ITEM = 1;
@@ -52,9 +51,7 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == VIEW_TYPE_HEADER) {
             View view = layoutInflater.inflate(R.layout.layout_header_item_news_list, parent, false);
-            NewsHeaderViewHolder viewHolder = new NewsHeaderViewHolder(view);
-            newsPagerView = viewHolder.newsPagerView;
-            return viewHolder;
+            return new NewsHeaderViewHolder(view);
         } else if (viewType == VIEW_TYPE_ITEM) {
             View view = layoutInflater.inflate(R.layout.layout_item_news_list, parent, false);
             return new NewsItemViewHolder(view);
@@ -71,6 +68,7 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             NewsHeaderViewHolder viewHolder = (NewsHeaderViewHolder) holder;
             if (newsList.size() > 0) {
                 viewHolder.newsPagerView.setNewsList(newsList.subList(0, 6));
+                viewHolder.newsPagerView.setOnNewsIndexItemClickListener(newsIndexItemClickListener);
             }
         } else if (holder instanceof NewsItemViewHolder) {
             NewsItemViewHolder viewHolder = (NewsItemViewHolder) holder;
@@ -125,10 +123,6 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setNewsIndexItemClickListener(OnNewsIndexItemClickListener listener) {
         newsIndexItemClickListener = listener;
-    }
-
-    public void stopViewPagerScroll() {
-        newsPagerView.stopAutoPlay();
     }
 
 
