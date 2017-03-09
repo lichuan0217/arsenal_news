@@ -2,11 +2,13 @@ package top.lemonsoda.gunners.newsdetail;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import top.lemonsoda.gunners.data.NewsRepository;
 import top.lemonsoda.gunners.data.module.NewsDetail;
+import top.lemonsoda.gunners.utils.RxUtils;
 
 /**
  * Created by chuanl on 2/24/17.
@@ -21,6 +23,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     private NewsRepository newsRepository;
 
     private String articleId;
+    private Subscription loadSubscription;
 
     @Inject
     public NewsDetailPresenter(NewsDetailContract.View view, NewsRepository repository, String id) {
@@ -35,7 +38,7 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     public void loadNewsDetail(String articleId) {
         newsDetailView.showLoading();
 
-        newsRepository.getNewsDetailById(articleId)
+        loadSubscription = newsRepository.getNewsDetailById(articleId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<NewsDetail>() {
@@ -56,5 +59,10 @@ public class NewsDetailPresenter implements NewsDetailContract.Presenter {
     @Override
     public void start() {
         loadNewsDetail(articleId);
+    }
+
+    @Override
+    public void destroy() {
+        RxUtils.unsubscribe(loadSubscription);
     }
 }

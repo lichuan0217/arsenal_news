@@ -19,4 +19,16 @@ public class UserManagerModule {
     UserManager provideUserManager(Context context) {
         return new UserManager(context);
     }
+
+    @Provides
+    @NewsApplicationScope
+    AccessTokenKeeper provideAccessTokenKeeper(Context context) {
+        return new AccessTokenKeeper(context);
+    }
+
+    @Provides
+    @NewsApplicationScope
+    BitmapSaver provideBitmapSaver(Context context) {
+        return BitmapSaver.getInstance(context);
+    }
 }

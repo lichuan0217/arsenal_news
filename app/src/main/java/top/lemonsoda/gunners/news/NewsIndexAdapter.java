@@ -2,6 +2,7 @@ package top.lemonsoda.gunners.news;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -41,6 +45,8 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private final int VIEW_TYPE_ITEM = 1;
     private final int VIEW_TYPE_LOADING = 2;
 
+    private final int HEADER_NEWS_LIST_SIZE = 5;
+
     @Inject
     public NewsIndexAdapter(Context context) {
         this.context = context;
@@ -66,8 +72,8 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NewsHeaderViewHolder) {
             NewsHeaderViewHolder viewHolder = (NewsHeaderViewHolder) holder;
-            if (newsList.size() > 0) {
-                viewHolder.newsPagerView.setNewsList(newsList.subList(0, 6));
+            if (newsList.size() > 5) {
+                viewHolder.newsPagerView.setNewsList(getHeaderSubList());
                 viewHolder.newsPagerView.setOnNewsIndexItemClickListener(newsIndexItemClickListener);
             }
         } else if (holder instanceof NewsItemViewHolder) {
@@ -123,6 +129,25 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     public void setNewsIndexItemClickListener(OnNewsIndexItemClickListener listener) {
         newsIndexItemClickListener = listener;
+    }
+
+    private List<News> getHeaderSubList() {
+        ArrayList<News> headList = new ArrayList<>();
+        boolean[] flags = new boolean[HEADER_NEWS_LIST_SIZE];
+        int[] tmp = new int[HEADER_NEWS_LIST_SIZE];
+        Random random = new Random();
+        int num;
+        for (int i = 0; i < HEADER_NEWS_LIST_SIZE; i++) {
+            do {
+                num = random.nextInt(newsList.size());
+            } while (flags[i]);
+            flags[i] = true;
+            tmp[i] = num;
+            headList.add(newsList.get(num));
+        }
+
+        Log.d(TAG, "HeadList: " + Arrays.toString(tmp));
+        return headList;
     }
 
 

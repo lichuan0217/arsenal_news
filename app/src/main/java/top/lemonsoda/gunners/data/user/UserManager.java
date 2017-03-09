@@ -3,6 +3,8 @@ package top.lemonsoda.gunners.data.user;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import rx.Observable;
+import rx.Subscriber;
 import top.lemonsoda.gunners.data.module.User;
 
 /**
@@ -59,6 +61,17 @@ public class UserManager {
         user.setScreen_name(sharedPreferences.getString(KEY_USER_SCREEN_NAME, ""));
         user.setProfile_image_url(sharedPreferences.getString(KEY_USER_AVATAR_URL, ""));
         return user;
+    }
+    
+    public Observable<User> getUserInfo() {
+        return Observable.create(new Observable.OnSubscribe<User>() {
+            @Override
+            public void call(Subscriber<? super User> subscriber) {
+                User user = readUserInfo();
+                subscriber.onNext(user);
+                subscriber.onCompleted();
+            }
+        });
     }
 
 

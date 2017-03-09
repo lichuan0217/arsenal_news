@@ -131,8 +131,9 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         Log.d(TAG, "onDestroyView");
+        super.onDestroyView();
+        presenter.destroy();
     }
 
     @Override

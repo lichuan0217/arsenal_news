@@ -112,4 +112,9 @@ public class News implements Parcelable {
             return new News[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "News: " + this.header;
+    }
 }

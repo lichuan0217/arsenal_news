@@ -1,6 +1,7 @@
 package top.lemonsoda.gunners.news;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
@@ -19,10 +20,16 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 import top.lemonsoda.gunners.NewsApplication;
 import top.lemonsoda.gunners.R;
 import top.lemonsoda.gunners.base.BaseActivity;
+import top.lemonsoda.gunners.data.module.User;
+import top.lemonsoda.gunners.data.user.BitmapSaver;
 import top.lemonsoda.gunners.data.user.UserManager;
+import top.lemonsoda.gunners.login.LoginActivity;
 import top.lemonsoda.gunners.newsabout.AboutActivity;
 import top.lemonsoda.gunners.newsdetail.NewsDetailActivity;
 import top.lemonsoda.gunners.utils.ActivityUtils;
@@ -50,7 +57,10 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
     @Inject
     UserManager userManager;
 
-    // Used for exit_once_more
+    @Inject
+    BitmapSaver bitmapSaver;
+
+    private boolean isAvatarLoaded;
     private long exitTime = 0;
 
     @Override
@@ -84,6 +94,40 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
                 .build()
                 .inject(this);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (userManager.isUserLogin() && !isAvatarLoaded) {
+            Log.d(TAG, "User logged in, update UI");
+            userManager.getUserInfo()
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<User>() {
+                        @Override
+                        public void call(User user) {
+                            if (user.getId() != 0)
+                                tvUsername.setText(user.getScreen_name());
+                        }
+                    });
+            bitmapSaver.loadBitmap()
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Bitmap>() {
+                        @Override
+                        public void call(Bitmap bitmap) {
+                            if (bitmap != null) {
+                                imAvatar.setImageBitmap(bitmap);
+                                isAvatarLoaded = true;
+                            }
+                        }
+                    });
+        }
+        if (!userManager.isUserLogin() && isAvatarLoaded) {
+            Log.d(TAG, "User logged out, update UI");
+            tvUsername.setText("Arsenal Fans");
+            imAvatar.setImageResource(R.mipmap.avatar);
+            isAvatarLoaded = false;
+        }
     }
 
     @Override
@@ -174,8 +218,8 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
         imAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Intent intent = new Intent(NewsIndexActivity.this, TmpActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(NewsIndexActivity.this, LoginActivity.class);
+                startActivity(intent);
             }
         });
     }

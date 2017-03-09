@@ -85,6 +85,12 @@ public class NewsDetailFragment extends Fragment implements NewsDetailContract.V
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.destroy();
+    }
+
+    @Override
     public void setPresenter(NewsDetailContract.Presenter presenter) {
         this.presenter = presenter;
     }

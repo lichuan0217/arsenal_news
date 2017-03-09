@@ -12,11 +12,12 @@ public class Constants {
 
     public static final String CACHE_FILE_NAME = "arsenal_news";
     public static final String BASE_URL = "http://101.200.141.146:9000/arsenal/";
+    public static final String WEIBO_BASE_URL = "https://api.weibo.com/2/";
 
     public static final String INTENT_EXTRA_HEADER = "header";
     public static final String INTENT_EXTRA_ARTICLE_ID = "article_id";
 
-    public static final String APP_KEY = "2163958370";
+    public static final String APP_KEY = "2059721413";
     public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
     public static final String SCOPE =
             "email,direct_messages_read,direct_messages_write,"

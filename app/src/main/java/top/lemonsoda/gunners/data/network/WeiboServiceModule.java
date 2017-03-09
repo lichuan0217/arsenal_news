@@ -7,24 +7,24 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import top.lemonsoda.gunners.utils.di.NewsApplicationScope;
-import top.lemonsoda.gunners.utils.di.RetrofitArsenalQualifier;
+import top.lemonsoda.gunners.utils.di.RetroiftWeiboQualifier;
 
-import static top.lemonsoda.gunners.utils.Constants.BASE_URL;
+import static top.lemonsoda.gunners.utils.Constants.WEIBO_BASE_URL;
 
 /**
- * Created by chuanl on 2/15/17.
+ * Created by Chuan on 07/03/2017.
  */
 
 @Module(includes = {NetworkModule.class})
-public class NewsServiceModule {
+public class WeiboServiceModule {
 
     @Provides
     @NewsApplicationScope
-    @RetrofitArsenalQualifier
+    @RetroiftWeiboQualifier
     public Retrofit provideRetrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(BASE_URL)
+                .baseUrl(WEIBO_BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
@@ -32,7 +32,7 @@ public class NewsServiceModule {
 
     @Provides
     @NewsApplicationScope
-    public NewsService provideNewsService(@RetrofitArsenalQualifier Retrofit retrofit) {
-        return retrofit.create(NewsService.class);
+    public WeiboService provideWeiboService(@RetroiftWeiboQualifier Retrofit retrofit) {
+        return retrofit.create(WeiboService.class);
     }
 }

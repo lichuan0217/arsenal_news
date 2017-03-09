@@ -7,4 +7,6 @@ package top.lemonsoda.gunners.base;
 public interface BasePresenter {
 
     void start();
+
+    void destroy();
 }

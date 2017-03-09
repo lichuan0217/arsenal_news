@@ -7,11 +7,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import top.lemonsoda.gunners.data.NewsRepository;
 import top.lemonsoda.gunners.data.module.News;
+import top.lemonsoda.gunners.utils.NetworkUtils;
+import top.lemonsoda.gunners.utils.RxUtils;
 
 /**
  * Created by chuanl on 2/24/17.
@@ -28,6 +31,8 @@ public class NewsIndexPresenter implements NewsIndexContract.Presenter {
 
     private final Context context;
     private boolean firstLoad = true;
+
+    private Subscription loadSubscription;
 
     @Inject
     public NewsIndexPresenter(Context context, NewsRepository newsRepository,
@@ -46,6 +51,12 @@ public class NewsIndexPresenter implements NewsIndexContract.Presenter {
     }
 
     @Override
+    public void destroy() {
+        RxUtils.unsubscribe(loadSubscription);
+    }
+
+
+    @Override
     public void loadNews(boolean forceUpdate) {
 
         if (!forceUpdate) {
@@ -54,41 +65,43 @@ public class NewsIndexPresenter implements NewsIndexContract.Presenter {
 
         newsIndexView.showLoading();
 
-        // Load data from local database
-        newsRepository.getNewsFromLocal()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<News>>() {
-                    @Override
-                    public void call(List<News> newsList) {
-                        Log.d(TAG, "Get News From Local Done");
-                        newsIndexView.showNewsIndex(newsList);
-                    }
-                });
-
-        // Load data from network
-        newsRepository.getNewsFromNetwork(0)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<List<News>>() {
-                    @Override
-                    public void call(List<News> newsList) {
-                        Log.d(TAG, "Get News From Network Done");
-                        newsIndexView.showNewsIndex(newsList);
-                        newsIndexView.stopLoading();
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
-                        newsIndexView.stopLoading();
-                    }
-                });
+        if (NetworkUtils.isNetworkConnected(context)) {
+            // Load data from network
+            loadSubscription = newsRepository.getNewsFromNetwork(0)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<News>>() {
+                        @Override
+                        public void call(List<News> newsList) {
+                            Log.d(TAG, "Get News From Network Done");
+                            newsIndexView.showNewsIndex(newsList);
+                            newsIndexView.stopLoading();
+                        }
+                    }, new Action1<Throwable>() {
+                        @Override
+                        public void call(Throwable throwable) {
+                            newsIndexView.stopLoading();
+                        }
+                    });
+        } else {
+            // Load data from local database
+            loadSubscription = newsRepository.getNewsFromLocal()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<List<News>>() {
+                        @Override
+                        public void call(List<News> newsList) {
+                            Log.d(TAG, "Get News From Local Done");
+                            newsIndexView.showNewsIndex(newsList);
+                        }
+                    });
+        }
     }
 
     @Override
     public void loadMoreNews(int page) {
         // Load more data from network
-        newsRepository.getNewsFromNetwork(page)
+        loadSubscription = newsRepository.getNewsFromNetwork(page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<List<News>>() {
