@@ -13,7 +13,7 @@ import top.lemonsoda.gunners.data.module.User;
 
 public class UserManager {
 
-    private static final String PREFERENCES_NAME = "pref_user";
+    private static final String PREFERENCES_NAME = "pref`````_user";
     private static final String KEY_UID = "uid";
     private static final String KEY_USER_SCREEN_NAME = "screen_name";
     private static final String KEY_USER_AVATAR_URL = "avatar_url";
@@ -21,20 +21,22 @@ public class UserManager {
     private Context context;
     private SharedPreferences sharedPreferences;
     private boolean isUserLogin = false;
+    private User currentUser;
 
     public UserManager(Context context) {
         this.context = context;
         sharedPreferences = this.context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_APPEND);
 
-        isUserLogin = readUserInfo().getId() != 0;
+        currentUser = readUserInfo();
+        isUserLogin = currentUser.getId() != 0;
     }
 
     public boolean isUserLogin() {
         return isUserLogin;
     }
 
-    public void setUserLogin(boolean userLogin) {
-        isUserLogin = userLogin;
+    public User getCurrentUser() {
+        return currentUser;
     }
 
     /**
@@ -44,6 +46,8 @@ public class UserManager {
         if (null == user) {
             return;
         }
+        currentUser = new User(user);
+        isUserLogin = true;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putLong(KEY_UID, user.getId());
         editor.putString(KEY_USER_SCREEN_NAME, user.getScreen_name());
@@ -62,7 +66,7 @@ public class UserManager {
         user.setProfile_image_url(sharedPreferences.getString(KEY_USER_AVATAR_URL, ""));
         return user;
     }
-    
+
     public Observable<User> getUserInfo() {
         return Observable.create(new Observable.OnSubscribe<User>() {
             @Override
@@ -79,9 +83,10 @@ public class UserManager {
      * 清空 SharedPreferences 中 User信息。
      */
     public void clear() {
+        currentUser = new User();
+        isUserLogin = false;
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.commit();
-
     }
 }

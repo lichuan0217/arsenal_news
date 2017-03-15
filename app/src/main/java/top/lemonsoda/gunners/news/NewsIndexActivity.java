@@ -32,6 +32,7 @@ import top.lemonsoda.gunners.data.user.UserManager;
 import top.lemonsoda.gunners.login.LoginActivity;
 import top.lemonsoda.gunners.newsabout.AboutActivity;
 import top.lemonsoda.gunners.newsdetail.NewsDetailActivity;
+import top.lemonsoda.gunners.newsfavorite.NewsFavoriteActivity;
 import top.lemonsoda.gunners.utils.ActivityUtils;
 import top.lemonsoda.gunners.utils.Constants;
 import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
@@ -174,9 +175,10 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
                                             .setAction("Action", null).show();
                                     return true;
                                 }
+                                startActivity(new Intent(NewsIndexActivity.this, NewsFavoriteActivity.class));
+                                return true;
 //                                Bundle bundle = new Bundle();
 //                                bundle.putString(Constants.INTENT_EXTRA_USER_ID, user.getId() + "");
-//                                return switchActivity(FavoriteActivity.class, bundle);
                             case R.id.nav_about:
                                 startActivity(new Intent(NewsIndexActivity.this, AboutActivity.class));
                                 return true;

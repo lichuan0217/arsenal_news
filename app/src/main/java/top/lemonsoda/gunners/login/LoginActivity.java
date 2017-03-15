@@ -86,7 +86,6 @@ public class LoginActivity extends BaseActivity {
     void onLogout() {
         accessTokenKeeper.clear();
         accessToken = new Oauth2AccessToken();
-        userManager.setUserLogin(false);
         userManager.clear();
         updateView(false, true);
     }
@@ -174,7 +173,6 @@ public class LoginActivity extends BaseActivity {
                             public void call(User user) {
                                 tvLoginUsername.setText(user.getScreen_name());
                                 userManager.writeUserInfo(user);
-                                userManager.setUserLogin(true);
                                 progressDialog.dismiss();
                                 updateView(true, false);
                                 accessTokenKeeper.writeAccessToken(accessToken);

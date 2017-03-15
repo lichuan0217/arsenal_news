@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_news_favorite_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".newsfavorite.NewsFavoriteFragment"
+    tools:showIn="@layout/activity_news_favorite">
+
+    <top.lemonsoda.gunners.utils.ui.EmptyRecyclerView
+        android:id="@+id/rv_news_favorite_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/favorites_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_news_favorite_empty"
+            style="@style/TextAppearance.AppCompat.Widget.ActionMode.Title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/favorite_news_list_empty" />
+
+    </LinearLayout>
+
+
+
+</FrameLayout>
+

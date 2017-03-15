@@ -3,15 +3,14 @@ package top.lemonsoda.gunners.news;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -23,7 +22,6 @@ import top.lemonsoda.gunners.R;
 import top.lemonsoda.gunners.data.module.News;
 import top.lemonsoda.gunners.utils.ui.EmptyRecyclerView;
 import top.lemonsoda.gunners.utils.ui.EndlessRecyclerOnScrollListener;
-import top.lemonsoda.gunners.utils.ui.NewsPagerView;
 import top.lemonsoda.gunners.utils.ui.OnLoadMoreListener;
 import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
 
@@ -113,6 +111,7 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
     public void onStart() {
         super.onStart();
         if (this.presenter != null) {
+            Log.d(TAG, "onStart() calls presenter.start()");
             presenter.start();
         }
     }
@@ -141,11 +140,7 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
         super.onDestroy();
         Log.d(TAG, "onDestroy");
         // Stop the AutoScrollTask in NewsPagerView when destroy the fragment
-        RecyclerView.ViewHolder viewHolder =
-                newsListRecyclerView.getChildViewHolder(newsListRecyclerView.getChildAt(0));
-        NewsIndexAdapter.NewsHeaderViewHolder holder =
-                (NewsIndexAdapter.NewsHeaderViewHolder) viewHolder;
-        holder.newsPagerView.stopAutoPlay();
+        newsIndexAdapter.pagerView.stopAutoPlay();
     }
 
     @Override
@@ -181,8 +176,8 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
     public void showMoreNewsIndex(List<News> newsList) {
         // If newsList's size is 0, this means no more data
         if (newsList.size() == 0) {
-            Toast.makeText(getActivity(),
-                    getString(R.string.info_news_list_load_no_more), Toast.LENGTH_SHORT).show();
+            Snackbar.make(refreshLayout,
+                    getString(R.string.info_news_list_load_no_more), Snackbar.LENGTH_SHORT).show();
             noMoreData = true;
             // Remove load-more-progress-bar
             newsIndexAdapter.removeNullData();
@@ -200,6 +195,29 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
     }
 
     @Override
+    public void showError(String msg) {
+        Snackbar.make(refreshLayout, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
+    public void showLoadMoreError(String msg) {
+        newsListRecyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                // Remove load-more-progress-bar
+                newsIndexAdapter.removeNullData();
+                // Set scrollListener's status to "loaded"
+                scrollListener.setLoaded();
+            }
+        });
+
+        // Show error message
+        Snackbar.make(refreshLayout, msg, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
     public void onRefresh() {
         currentPage = 0;
         noMoreData = false;
@@ -208,6 +226,8 @@ public class NewsIndexFragment extends Fragment implements NewsIndexContract.Vie
 
     @Override
     public void onLoadMore() {
+        Log.d(TAG, "onLoadMore() called");
+
         // If no more data, just return without request the internet
         if (noMoreData) {
             return;

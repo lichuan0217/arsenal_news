@@ -7,9 +7,9 @@
     <string name="about_share_text">阿森纳新闻--汇集枪迷的信息</string>
 
     <string name="info_load_error">网络加载出错...</string>
+    <string name="info_no_network">网络未连接...</string>
     <string name="info_news_list_load_error">网络加载出错...</string>
     <string name="info_news_list_load_no_more">没有更多新闻...</string>
-    <string name="title_activity_artical">ArticalActivity</string>
     <string name="snake_exit_once_more">再按一次退出应用</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -23,10 +23,6 @@
     <string name="favorite_prompt">已收藏</string>
     <string name="favorite_cancel_prompt">已取消收藏</string>
 
-
-    <string name="test_artical_content">这名埃及球员以500万英镑的身价从巴塞尔转会而来，并在后腰位置上为枪手的防守提供了稳定保障。
-
-科奎林在接受《伦敦晚旗报》采访时表示：“他表现得很好，他对球队来讲是个很好的补充。他真的适应得很快，你别忘记他才来到这里两个多月。我认为他在对阵巴塞罗那的时候表现的真好，同样在对阵埃弗顿的比赛也是这样。”</string>
     <string name="title_activity_login">登录</string>
 
     <string name="weibosdk_demo_token_to_string_format_1">Token：%1$s \n有效期：%2$s</string>
@@ -50,6 +46,10 @@
     <string name="title_activity_news_index">@string/app_name</string>
 
     <string name="news_list_empty">No News Data</string>
+    <string name="favorite_news_list_empty">尚未收藏新闻</string>
     <string name="title_activity_news_detail">NewsDetailActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

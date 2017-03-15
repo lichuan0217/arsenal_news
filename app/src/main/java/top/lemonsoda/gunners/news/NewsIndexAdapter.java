@@ -40,17 +40,21 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private List<News> newsList = new ArrayList<>();
     private LayoutInflater layoutInflater;
     private OnNewsIndexItemClickListener newsIndexItemClickListener;
+    public NewsPagerView pagerView;
 
     private final int VIEW_TYPE_HEADER = 0;
     private final int VIEW_TYPE_ITEM = 1;
     private final int VIEW_TYPE_LOADING = 2;
 
     private final int HEADER_NEWS_LIST_SIZE = 5;
+    private final int NEWS_LIST_SIZE_ONE_PAGE = 30;
+    private int[] headerIndex = new int[HEADER_NEWS_LIST_SIZE];
 
     @Inject
     public NewsIndexAdapter(Context context) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
+        generateHeaderIndex();
     }
 
     @Override
@@ -72,6 +76,7 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof NewsHeaderViewHolder) {
             NewsHeaderViewHolder viewHolder = (NewsHeaderViewHolder) holder;
+            pagerView = viewHolder.newsPagerView;
             if (newsList.size() > 5) {
                 viewHolder.newsPagerView.setNewsList(getHeaderSubList());
                 viewHolder.newsPagerView.setOnNewsIndexItemClickListener(newsIndexItemClickListener);
@@ -133,21 +138,29 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     private List<News> getHeaderSubList() {
         ArrayList<News> headList = new ArrayList<>();
-        boolean[] flags = new boolean[HEADER_NEWS_LIST_SIZE];
-        int[] tmp = new int[HEADER_NEWS_LIST_SIZE];
-        Random random = new Random();
-        int num;
-        for (int i = 0; i < HEADER_NEWS_LIST_SIZE; i++) {
-            do {
-                num = random.nextInt(newsList.size());
-            } while (flags[i]);
-            flags[i] = true;
-            tmp[i] = num;
-            headList.add(newsList.get(num));
+        if (newsList.size() < NEWS_LIST_SIZE_ONE_PAGE) {
+            generateHeaderIndex(newsList.size());
         }
-
-        Log.d(TAG, "HeadList: " + Arrays.toString(tmp));
+        Log.d(TAG, "headerIndex: " + Arrays.toString(headerIndex));
+        for (int i : headerIndex) {
+            headList.add(newsList.get(i));
+        }
         return headList;
+    }
+
+    private void generateHeaderIndex(int size) {
+        List<Integer> tmp = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            tmp.add(i);
+        }
+        Collections.shuffle(tmp);
+        for (int i = 0; i < HEADER_NEWS_LIST_SIZE; i++) {
+            headerIndex[i] = tmp.get(i);
+        }
+    }
+
+    private void generateHeaderIndex() {
+        generateHeaderIndex(NEWS_LIST_SIZE_ONE_PAGE);
     }
 
 
@@ -158,6 +171,7 @@ public class NewsIndexAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         public NewsHeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
         }
     }
 

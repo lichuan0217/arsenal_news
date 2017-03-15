@@ -27,5 +27,9 @@ public interface NewsIndexContract {
         void showNewsIndex(List<News> newsList);
 
         void showMoreNewsIndex(List<News> newsList);
+
+        void showError(String msg);
+
+        void showLoadMoreError(String msg);
     }
 }

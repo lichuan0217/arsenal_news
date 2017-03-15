@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-
     <application
         android:name=".NewsApplication"
         android:allowBackup="true"
@@ -37,6 +36,15 @@
         </activity>
         <activity
             android:name=".newsabout.AboutActivity"
+            android:parentActivityName=".news.NewsIndexActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="top.lemonsoda.gunners.news.NewsIndexActivity" />
+        </activity>
+        <activity
+            android:name=".newsfavorite.NewsFavoriteActivity"
+            android:label="@string/title_activity_favorite"
             android:parentActivityName=".news.NewsIndexActivity"
             android:theme="@style/AppTheme">
             <meta-data

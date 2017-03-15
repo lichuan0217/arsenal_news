@@ -10,6 +10,14 @@ public class User {
     private String screen_name;
     private String profile_image_url;
 
+    public User() {}
+
+    public User(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.screen_name = user.getScreen_name();
+        this.profile_image_url = user.getProfile_image_url();
+    }
 
     public long getId() {
         return id;

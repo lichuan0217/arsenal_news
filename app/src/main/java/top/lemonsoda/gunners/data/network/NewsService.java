@@ -19,4 +19,7 @@ public interface NewsService {
 
     @GET("article/{id}")
     Observable<NewsDetail> getNewsDetail(@Path("id") String id);
+
+    @GET("favorites/{id}/")
+    Observable<List<News>> getFavorites(@Path("id") String id);
 }

@@ -18,4 +18,6 @@ public interface NewsDataSource {
 
     Observable<NewsDetail> getNewsDetailById(String id);
 
+    Observable<List<News>> getFavorites(String id);
+
 }

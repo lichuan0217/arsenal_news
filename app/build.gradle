@@ -46,7 +46,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile files('libs/weiboSDKCore_3.1.4.jar')
-    testCompile 'junit:junit:4.12'
 
     // Android Support
     compile rootProject.ext.dependencies.getAt("supprot-v4")
@@ -88,4 +87,6 @@ dependencies {
     // ButterKnife
     annotationProcessor rootProject.ext.dependencies.getAt("butterknife-compiler")
     compile rootProject.ext.dependencies.getAt("butterknife")
+    compile 'com.android.support:support-v4:25.1.0'
+    testCompile 'junit:junit:4.12'
 }

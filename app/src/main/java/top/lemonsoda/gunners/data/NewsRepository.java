@@ -67,4 +67,11 @@ public class NewsRepository implements NewsDataSource {
     public Observable<NewsDetail> getNewsDetailById(String id) {
         return newsService.getNewsDetail(id);
     }
+
+    @Override
+    public Observable<List<News>> getFavorites(String id) {
+        return newsService.getFavorites(id);
+    }
+
+
 }
