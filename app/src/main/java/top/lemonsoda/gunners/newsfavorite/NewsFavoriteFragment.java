@@ -128,4 +128,9 @@ public class NewsFavoriteFragment extends Fragment implements NewsFavoriteContra
         Snackbar.make(container, error, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
+
+    @Override
+    public void updateFavoriteNews(String articleId) {
+        newsFavoriteAdapter.deleteData(articleId);
+    }
 }

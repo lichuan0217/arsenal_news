@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/ll_news_detail_container"
     android:padding="@dimen/margin_8dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".newsdetail.NewsDetailFragment"

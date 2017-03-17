@@ -19,6 +19,7 @@ import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
 
 public class NewsFavoriteActivity extends BaseActivity implements OnNewsIndexItemClickListener {
     private static final String TAG = NewsFavoriteActivity.class.getCanonicalName();
+    private static final int REQUEST_CODE = 0;
 
     @BindView(R.id.fl_news_favorite)
     FrameLayout flNewsFavoriteContainer;
@@ -64,6 +65,19 @@ public class NewsFavoriteActivity extends BaseActivity implements OnNewsIndexIte
         Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_ARTICLE_ID, articleId);
         intent.putExtra(Constants.INTENT_EXTRA_HEADER, header);
-        startActivity(intent);
+        intent.putExtra(Constants.INTENT_EXTRA_SOURCE, Constants.ID_NEWS_FAVORITE_ACTIVITY);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        Log.d(TAG, "onActivityResult");
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            boolean isFavorite = intent.getBooleanExtra(Constants.INTENT_EXTRA_IS_FAVORITE, true);
+            String articleId = intent.getStringExtra(Constants.INTENT_EXTRA_ARTICLE_ID);
+            Log.d(TAG, "isFavorite: " + isFavorite + " id: " + articleId);
+            newsFavoritePresenter.updateFavoriteNews(isFavorite, articleId);
+        }
     }
 }

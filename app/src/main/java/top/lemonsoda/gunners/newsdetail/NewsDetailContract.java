@@ -13,6 +13,10 @@ public interface NewsDetailContract {
 
     interface Presenter extends BasePresenter {
         void loadNewsDetail(String articleId);
+
+        void postFavorite(String articleId, String userId);
+
+        void deleteFavorite(String articleId, String userId);
     }
 
     interface View extends BaseView<Presenter> {
@@ -23,5 +27,9 @@ public interface NewsDetailContract {
         void showError();
 
         void showNewsDetail(NewsDetail newsDetail);
+
+        void updateFavorite(Boolean isFavorite);
+
+        void showMessage(String msg);
     }
 }

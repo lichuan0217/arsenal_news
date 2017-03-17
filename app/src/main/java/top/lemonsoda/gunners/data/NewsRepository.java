@@ -9,6 +9,9 @@ import rx.functions.Action1;
 import top.lemonsoda.gunners.data.db.dao.NewsDao;
 import top.lemonsoda.gunners.data.module.News;
 import top.lemonsoda.gunners.data.module.NewsDetail;
+import top.lemonsoda.gunners.data.module.RequestFavorite;
+import top.lemonsoda.gunners.data.module.RequestUser;
+import top.lemonsoda.gunners.data.module.ResponseFavorite;
 import top.lemonsoda.gunners.data.network.NewsService;
 
 /**
@@ -69,8 +72,24 @@ public class NewsRepository implements NewsDataSource {
     }
 
     @Override
+    public Observable<NewsDetail> getNewsDetailByIdWithUserId(String id, RequestUser user) {
+        return newsService.getArticleWithUserId(id, user);
+    }
+
+
+    @Override
     public Observable<List<News>> getFavorites(String id) {
         return newsService.getFavorites(id);
+    }
+
+    @Override
+    public Observable<ResponseFavorite> postFavorite(RequestFavorite favorite) {
+        return newsService.postFavorite(favorite);
+    }
+
+    @Override
+    public Observable<ResponseFavorite> deleteFavorite(String articleId, String userId) {
+        return newsService.deleteFavorite(userId, articleId);
     }
 
 

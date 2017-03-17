@@ -1,9 +1,13 @@
 package top.lemonsoda.gunners.newsdetail;
 
+import android.content.Intent;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,15 +18,18 @@ import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import top.lemonsoda.gunners.NewsApplication;
 import top.lemonsoda.gunners.R;
 import top.lemonsoda.gunners.base.BaseActivity;
+import top.lemonsoda.gunners.data.user.UserManager;
 import top.lemonsoda.gunners.utils.ActivityUtils;
 import top.lemonsoda.gunners.utils.Constants;
 import top.lemonsoda.gunners.utils.ShareUtils;
 import top.lemonsoda.gunners.utils.Utils;
 
 public class NewsDetailActivity extends BaseActivity {
+    private static final String TAG = NewsDetailActivity.class.getCanonicalName();
 
     @BindView(R.id.collapsing_toolbar_layout)
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -30,8 +37,30 @@ public class NewsDetailActivity extends BaseActivity {
     @BindView(R.id.iv_article_header)
     ImageView ivArticleHeader;
 
+    @BindView(R.id.fab_favorite)
+    FloatingActionButton fabFavorite;
+
+    @OnClick(R.id.fab_favorite)
+    void onFavoriteClick() {
+        if (!userManager.isUserLogin()) {
+            Snackbar.make(collapsingToolbarLayout,
+                    R.string.favorite_login_prompt, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+        if (isFavorite) {
+            presenter.deleteFavorite(articleId, userManager.getCurrentUser().getId() + "");
+        } else {
+            presenter.postFavorite(articleId, userManager.getCurrentUser().getId() + "");
+        }
+    }
+
     private String articleId;
     private String header;
+    private int idSourceActivity;
+    private boolean isFavorite;
+
+    @Inject
+    UserManager userManager;
 
     @Inject
     NewsDetailPresenter presenter;
@@ -53,6 +82,7 @@ public class NewsDetailActivity extends BaseActivity {
         if (getIntent() != null) {
             header = getIntent().getStringExtra(Constants.INTENT_EXTRA_HEADER);
             articleId = getIntent().getStringExtra(Constants.INTENT_EXTRA_ARTICLE_ID);
+            idSourceActivity = getIntent().getIntExtra(Constants.INTENT_EXTRA_SOURCE, -1);
         }
 
         // Set title
@@ -97,6 +127,28 @@ public class NewsDetailActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed");
+        if (idSourceActivity == Constants.ID_NEWS_FAVORITE_ACTIVITY) {
+            Log.d(TAG, "setResult");
+            Intent intent = new Intent();
+            intent.putExtra(Constants.INTENT_EXTRA_IS_FAVORITE, isFavorite);
+            intent.putExtra(Constants.INTENT_EXTRA_ARTICLE_ID, articleId);
+            setResult(RESULT_OK, intent);
+        }
+        super.onBackPressed();
+    }
+
+    public void updateFABFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+        if (isFavorite) {
+            fabFavorite.setImageResource(R.mipmap.ic_like_filled);
+        } else {
+            fabFavorite.setImageResource(R.mipmap.ic_like_outline);
+        }
     }
 
 }

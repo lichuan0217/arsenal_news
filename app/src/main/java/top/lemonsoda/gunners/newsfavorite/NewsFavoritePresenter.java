@@ -84,4 +84,11 @@ public class NewsFavoritePresenter implements NewsFavoriteContract.Presenter {
             view.showError(context.getString(R.string.info_no_network));
         }
     }
+
+    @Override
+    public void updateFavoriteNews(boolean isFavorite, String articleId) {
+        if (!isFavorite) {
+            view.updateFavoriteNews(articleId);
+        }
+    }
 }

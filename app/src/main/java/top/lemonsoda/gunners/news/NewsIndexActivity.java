@@ -137,6 +137,7 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
         Intent intent = new Intent(this, NewsDetailActivity.class);
         intent.putExtra(Constants.INTENT_EXTRA_ARTICLE_ID, articleId);
         intent.putExtra(Constants.INTENT_EXTRA_HEADER, header);
+        intent.putExtra(Constants.INTENT_EXTRA_SOURCE, Constants.ID_NEWS_INDEX_ACTIVITY);
         startActivity(intent);
     }
 

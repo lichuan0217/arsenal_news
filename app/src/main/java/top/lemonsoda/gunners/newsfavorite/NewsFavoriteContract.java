@@ -14,6 +14,8 @@ public interface NewsFavoriteContract {
 
     interface Presenter extends BasePresenter {
         void loadFavoriteNews(boolean forceUpdate);
+
+        void updateFavoriteNews(boolean isFavorite, String articleId);
     }
 
     interface View extends BaseView<NewsFavoriteContract.Presenter> {
@@ -24,5 +26,7 @@ public interface NewsFavoriteContract {
         void showFavoriteNews(List<News> newsList);
 
         void showError(String error);
+
+        void updateFavoriteNews(String articleId);
     }
 }

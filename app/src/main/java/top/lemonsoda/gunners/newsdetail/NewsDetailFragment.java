@@ -2,6 +2,7 @@ package top.lemonsoda.gunners.newsdetail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,8 +11,8 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -31,6 +32,9 @@ public class NewsDetailFragment extends Fragment implements NewsDetailContract.V
     private NewsDetailContract.Presenter presenter;
     private String articleId;
     private String header;
+
+    @BindView(R.id.ll_news_detail_container)
+    LinearLayout llContainer;
 
     @BindView(R.id.tv_article_date)
     TextView tvArticleDate;
@@ -108,10 +112,7 @@ public class NewsDetailFragment extends Fragment implements NewsDetailContract.V
     @Override
     public void showError() {
         Log.d(TAG, "Error when loading data...");
-        Toast.makeText(
-                getActivity(),
-                getString(R.string.info_load_error),
-                Toast.LENGTH_SHORT).show();
+        showMessage(getString(R.string.info_load_error));
     }
 
     @Override
@@ -120,11 +121,22 @@ public class NewsDetailFragment extends Fragment implements NewsDetailContract.V
         tvArticleSource.setText("来源 " + newsDetail.getSource());
         tvArticleDate.setText(newsDetail.getDate());
         tvArticleEditor.setText(newsDetail.getEditor());
+        updateFavorite(newsDetail.getFavorite());
         Glide.with(getActivity())
                 .load(newsDetail.getPicture_src())
                 .centerCrop()
                 .thumbnail(0.5f)
                 .into(((NewsDetailActivity) getActivity()).ivArticleHeader);
+    }
+
+    @Override
+    public void updateFavorite(Boolean isFavorite) {
+        ((NewsDetailActivity) getActivity()).updateFABFavorite(isFavorite);
+    }
+
+    @Override
+    public void showMessage(String msg) {
+        Snackbar.make(llContainer, msg, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
 
     private void initWebView() {

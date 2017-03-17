@@ -2,6 +2,7 @@ package top.lemonsoda.gunners.newsfavorite;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
  */
 
 public class NewsFavoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final String TAG = NewsFavoriteAdapter.class.getCanonicalName();
 
     private Context context;
     private List<News> newsList = new ArrayList<>();
@@ -65,6 +67,21 @@ public class NewsFavoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             newsList.addAll(newsCollection);
         }
         notifyDataSetChanged();
+    }
+
+    public void deleteData(String id) {
+        int index = -1;
+        for (int i = 0; i < newsList.size(); ++i) {
+            if (newsList.get(i).getArticleId().equals(id)) {
+                index = i;
+                break;
+            }
+        }
+        Log.d(TAG, "Remove index: " + index);
+        if (index >= 0) {
+            newsList.remove(index);
+            notifyItemRemoved(index);
+        }
     }
 
     public void setOnNewsItemClickListener(OnNewsIndexItemClickListener listener) {
