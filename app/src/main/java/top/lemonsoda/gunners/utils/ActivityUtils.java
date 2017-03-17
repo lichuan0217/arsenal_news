@@ -16,4 +16,12 @@ public class ActivityUtils {
         transaction.add(frameId, fragment);
         transaction.commit();
     }
+
+    public static void addFragmentToActivity(android.app.FragmentManager fragmentManager,
+                                             android.app.Fragment fragment, int frameId) {
+
+        android.app.FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.add(frameId, fragment);
+        transaction.commit();
+    }
 }

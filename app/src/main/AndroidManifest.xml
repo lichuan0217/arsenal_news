@@ -60,13 +60,17 @@
                 android:value="top.lemonsoda.gunners.news.NewsIndexActivity" />
         </activity>
 
+        <activity
+            android:name=".settings.SettingsActivity"
+            android:label="@string/title_activity_setting"></activity>
+
+
         <!-- Weibo Login Configuration -->
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-
     </application>
 
 </manifest>

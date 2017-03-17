@@ -33,6 +33,7 @@ import top.lemonsoda.gunners.login.LoginActivity;
 import top.lemonsoda.gunners.newsabout.AboutActivity;
 import top.lemonsoda.gunners.newsdetail.NewsDetailActivity;
 import top.lemonsoda.gunners.newsfavorite.NewsFavoriteActivity;
+import top.lemonsoda.gunners.settings.SettingsActivity;
 import top.lemonsoda.gunners.utils.ActivityUtils;
 import top.lemonsoda.gunners.utils.Constants;
 import top.lemonsoda.gunners.utils.ui.OnNewsIndexItemClickListener;
@@ -178,13 +179,12 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
                                 }
                                 startActivity(new Intent(NewsIndexActivity.this, NewsFavoriteActivity.class));
                                 return true;
-//                                Bundle bundle = new Bundle();
-//                                bundle.putString(Constants.INTENT_EXTRA_USER_ID, user.getId() + "");
                             case R.id.nav_about:
                                 startActivity(new Intent(NewsIndexActivity.this, AboutActivity.class));
                                 return true;
-//                            case R.id.nav_settings:
-//                                return switchActivity(SettingsActivity.class);
+                            case R.id.nav_settings:
+                                startActivity(new Intent(NewsIndexActivity.this, SettingsActivity.class));
+                                return true;
                         }
                         return true;
                     }
