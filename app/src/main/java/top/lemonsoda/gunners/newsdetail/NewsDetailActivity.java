@@ -21,6 +21,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import top.lemonsoda.gunners.NewsApplication;
 import top.lemonsoda.gunners.R;
+import top.lemonsoda.gunners.SplashActivity;
 import top.lemonsoda.gunners.base.BaseActivity;
 import top.lemonsoda.gunners.data.user.UserManager;
 import top.lemonsoda.gunners.utils.ActivityUtils;
@@ -133,11 +134,17 @@ public class NewsDetailActivity extends BaseActivity {
     public void onBackPressed() {
         Log.d(TAG, "onBackPressed");
         if (idSourceActivity == Constants.ID_NEWS_FAVORITE_ACTIVITY) {
-            Log.d(TAG, "setResult");
+            Log.d(TAG, "SetResult for Favorite Activity");
             Intent intent = new Intent();
             intent.putExtra(Constants.INTENT_EXTRA_IS_FAVORITE, isFavorite);
             intent.putExtra(Constants.INTENT_EXTRA_ARTICLE_ID, articleId);
             setResult(RESULT_OK, intent);
+        } else if (idSourceActivity == Constants.ID_NEWS_RECEIVER) {
+            Log.d(TAG, "Come From NewsReceiver");
+            if (isTaskRoot()) {
+                Intent intent = new Intent(NewsDetailActivity.this, SplashActivity.class);
+                startActivity(intent);
+            }
         }
         super.onBackPressed();
     }

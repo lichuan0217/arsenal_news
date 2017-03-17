@@ -20,6 +20,7 @@ public class Constants {
     public static final String INTENT_EXTRA_IS_FAVORITE = "is_favorite";
     public static final int ID_NEWS_INDEX_ACTIVITY = 0;
     public static final int ID_NEWS_FAVORITE_ACTIVITY = 1;
+    public static final int ID_NEWS_RECEIVER = 2;
 
     public static final String APP_KEY = "2059721413";
     public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";

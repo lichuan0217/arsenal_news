@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 import de.hdodenhof.circleimageview.CircleImageView;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -101,6 +102,7 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
     @Override
     protected void onResume() {
         super.onResume();
+        JPushInterface.onResume(this);
         if (userManager.isUserLogin() && !isAvatarLoaded) {
             Log.d(TAG, "User logged in, update UI");
             userManager.getUserInfo()
@@ -130,6 +132,12 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
             imAvatar.setImageResource(R.mipmap.avatar);
             isAvatarLoaded = false;
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 
     @Override

@@ -46,6 +46,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile files('libs/weiboSDKCore_3.1.4.jar')
+    compile files('libs/jpush-android-2.1.3.jar')
 
     // Android Support
     compile rootProject.ext.dependencies.getAt("supprot-v4")
