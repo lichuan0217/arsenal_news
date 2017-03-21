@@ -22,7 +22,7 @@ public class SettingsFragment extends PreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_main);
-        prefNotify = (CheckBoxPreference) findPreference(Constants.PREF_KEY_NOITFY);
+        prefNotify = (CheckBoxPreference) findPreference(Constants.PREF_KEY_NOTIFY);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class SettingsFragment extends PreferenceFragment
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(Constants.PREF_KEY_NOITFY)) {
+        if (key.equals(Constants.PREF_KEY_NOTIFY)) {
             Toast.makeText(getActivity(),
                     "key: " + key + ", values: " + sharedPreferences.getBoolean(key, false),
                     Toast.LENGTH_SHORT).show();

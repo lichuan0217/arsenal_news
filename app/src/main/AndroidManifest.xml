@@ -18,6 +18,8 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+
 
     <application
         android:name=".NewsApplication"
@@ -178,7 +180,7 @@
             android:value="developer-default" />
         <meta-data
             android:name="JPUSH_APPKEY"
-            android:value="17748941795188d960ef8ccd" />
+            android:value="@string/JPUSH_APP_KEY" />
         <!-- JPush Configuration End -->
 
     </application>

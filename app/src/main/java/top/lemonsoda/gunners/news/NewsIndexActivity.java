@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.tencent.bugly.crashreport.CrashReport;
+
 import javax.inject.Inject;
 
 import butterknife.BindView;
@@ -187,11 +189,11 @@ public class NewsIndexActivity extends BaseActivity implements OnNewsIndexItemCl
                                 }
                                 startActivity(new Intent(NewsIndexActivity.this, NewsFavoriteActivity.class));
                                 return true;
-                            case R.id.nav_about:
-                                startActivity(new Intent(NewsIndexActivity.this, AboutActivity.class));
-                                return true;
                             case R.id.nav_settings:
                                 startActivity(new Intent(NewsIndexActivity.this, SettingsActivity.class));
+                                return true;
+                            case R.id.nav_about:
+                                startActivity(new Intent(NewsIndexActivity.this, AboutActivity.class));
                                 return true;
                         }
                         return true;

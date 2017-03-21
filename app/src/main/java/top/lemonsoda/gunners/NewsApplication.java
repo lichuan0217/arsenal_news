@@ -2,9 +2,15 @@ package top.lemonsoda.gunners;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.tencent.bugly.crashreport.CrashReport;
 
 import cn.jpush.android.api.JPushInterface;
 import timber.log.Timber;
+import top.lemonsoda.gunners.utils.Constants;
+import top.lemonsoda.gunners.utils.ThirdPartyService;
 
 /**
  * Created by chuanl on 2/24/17.
@@ -23,8 +29,7 @@ public class NewsApplication extends Application {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
 
-        JPushInterface.setDebugMode(true);    // 设置开启日志,发布时请关闭日志
-        JPushInterface.init(this);            // 初始化 JPush
+        initThirdPartyService();
 
         component = DaggerNewsApplicationComponent.builder()
                 .newsApplicationModule(new NewsApplicationModule(this))
@@ -34,5 +39,11 @@ public class NewsApplication extends Application {
 
     public NewsApplicationComponent getComponent() {
         return component;
+    }
+
+    private void initThirdPartyService() {
+        ThirdPartyService.init(this);
+        ThirdPartyService.initJPush();
+        ThirdPartyService.initBugly();
     }
 }

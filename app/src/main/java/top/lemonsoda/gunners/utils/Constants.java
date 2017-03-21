@@ -4,6 +4,8 @@ import android.os.Environment;
 
 import java.io.File;
 
+import top.lemonsoda.gunners.BuildConfig;
+
 /**
  * Created by chuanl on 2/24/17.
  */
@@ -22,7 +24,9 @@ public class Constants {
     public static final int ID_NEWS_FAVORITE_ACTIVITY = 1;
     public static final int ID_NEWS_RECEIVER = 2;
 
-    public static final String APP_KEY = "2059721413";
+    public static final String BUGLY_APP_ID = BuildConfig.BUGLY_APP_ID;
+
+    public static final String APP_KEY = BuildConfig.WEIBO_APP_KEY;
     public static final String REDIRECT_URL = "https://api.weibo.com/oauth2/default.html";
     public static final String SCOPE =
             "email,direct_messages_read,direct_messages_write,"
@@ -44,5 +48,5 @@ public class Constants {
 
     public static final String INTENT_EXTRA_USER_ID = "user_id";
 
-    public static final String PREF_KEY_NOITFY = "key_notify_news";
+    public static final String PREF_KEY_NOTIFY = "key_notify_news";
 }

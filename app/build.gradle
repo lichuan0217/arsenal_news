@@ -20,8 +20,13 @@ android {
         versionCode rootProject.ext.android.versionCode
         versionName rootProject.ext.android.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
     }
     buildTypes {
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -30,6 +35,12 @@ android {
 
         debug {
             signingConfig signingConfigs.config
+        }
+
+        buildTypes.each {
+            it.buildConfigField 'String', 'WEIBO_APP_KEY', WEIBO_APP_KEY
+            it.buildConfigField 'String', 'BUGLY_APP_ID', BUGLY_APP_ID
+            it.resValue 'string', 'JPUSH_APP_KEY', JPUSH_APP_KEY
         }
     }
 
@@ -55,6 +66,7 @@ dependencies {
     compile rootProject.ext.dependencies.getAt("recyclerview")
     compile rootProject.ext.dependencies.getAt("cardview")
     compile rootProject.ext.dependencies.getAt("gridlayout")
+    compile 'com.android.support.constraint:constraint-layout:+'
 
     // Dagger 2
     compile rootProject.ext.dependencies.getAt("dagger")
@@ -88,7 +100,10 @@ dependencies {
     // ButterKnife
     annotationProcessor rootProject.ext.dependencies.getAt("butterknife-compiler")
     compile rootProject.ext.dependencies.getAt("butterknife")
-    compile 'com.android.support:support-v4:25.1.0'
-    compile 'com.android.support.constraint:constraint-layout:+'
+
+    // Bugly
+    compile 'com.tencent.bugly:crashreport:latest.release'
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
+
     testCompile 'junit:junit:4.12'
 }
